@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- <meta name="viewport"content="initial-scale=0.3, user-scalable=no"> -->
+        <meta name="viewport" content="width=device-width">
+        <title>Vent Trainer</title>
+        <link rel="shortcut icon" href="lungs.png" type="image/x-icon">
+        <link rel="icon" href="lungs.png" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.css">
+        <link rel="stylesheet" type="text/css" href="fa/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="css/VentTrainer.css">
+        <script type="text/javascript" src="js/Breaths.js"></script>
+        <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src=bootstrap/js/bootstrap.js></script>
+        <script type="text/javascript" src=bootstrap/js/jquery.bootstrap-touchspinv4.js></script>
+    </head>
+    <body>
+        <!-- infoModal -->
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                        <img src="images/lungs.png"> Ventilation Trainer
+                        <span><small>&nbsp;| an application which simulates a mechanical ventilator and a ventilated patient</small><span>
+                            </h4>
+                        </div>
+                        <div class="modal-body" >
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading infoScreen">
+                                        <h6 class="panel-title infoScreen">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#about">about this application</a>
+                                        </h6>
+                                    </div>
+                                    <div id="about" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            This application is intended as a training tool especially to understand and learn to interpret ventilation waveforms.
+                                            This simulator is not intended for clinical decision making or as part of any patient care process nor are any patient values clinically representative.
+                                            The simulator uses a simple single compartment lung model, which is appropriate for educational purposes but does not represent very well a real lung.
+                                            <br>It is important to keep the following in mind:
+                                            <ul>
+                                                <li>Changing ventilation settings has immediate effect, unlike actual ventilators. There is no constrain checker for setttings. For example it is possible to set a reate of 50 bmp and inspiratory time of 2 seconds which is physically impossible.</li>
+                                                <li>Triggered beaths are indicated underneath the airway pressure waveform </li>
+                                                <li>It is possible to toggle display of the alveaolar pressure superimposed with the airway pressure. This is important in order to understand the interaction of the ventilator with the ventilator and the involved time constants</li>
+                                                <li>The real time monitored values are typically not shown on a real ventilator and they are displayed in faded type for debugging purposes</li>
+                                                <li>In a real ventilator breath rate, exhaled minute volume and I:E ratio are running averages. in this sumulation they are calculated breath by breath</li>
+                                            </ul>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading infoScreen">
+                                        <h6 class="panel-title infoScreen">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#screenOrientation">screen orientation</a>
+                                        </h6>
+                                    </div>
+                                    <div id="screenOrientation" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <img id="infoScreen" src="images/infoScreen.png">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading infoScreen">
+                                        <h6 class="panel-title infoScreen">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#definitions">definitions</a>
+                                        </h6>
+                                    </div>
+                                    <div id="definitions" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <table class="infoModal">
+                                                <tr>
+                                                    <td class="infoModal">A/C VC</td>
+                                                    <td class="infoModal">Assist Control Volume Control</td>
+                                                    <td class="infoModal">A/C PC</td>
+                                                    <td class="infoModal">Assist Control Pressure Control</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">SIMV VC</td>
+                                                    <td class="infoModal">Synchronized Intermittent Mandatory Ventilation, Volume Control</td>
+                                                    <td class="infoModal">SIMV PC</td>
+                                                    <td class="infoModal">Synchronized Intermittent Mandatory Ventilation, Pressure Control</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">CPAP/PS</td>
+                                                    <td class="infoModal">Continuous Positive Airway Pressure with Pressure Support</td>
+                                                    <td class="infoModal">Paw</td>
+                                                    <td class="infoModal">measured airway pressure, measured at the patient "Y"</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Flow</td>
+                                                    <td class="infoModal">flow in and out the patient's lungs</td>
+                                                    <td class="infoModal">Vol</td>
+                                                    <td class="infoModal">instantaneous volume of the lung above FRC (Functional Residual Capacity)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Pmax</td>
+                                                    <td class="infoModal">measured maximum airway pressure during the breath</td>
+                                                    <td class="infoModal">Pplat</td>
+                                                    <td class="infoModal">measured plateau pressure, displayes only in volume modes with pause > 0%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">PEEP</td>
+                                                    <td class="infoModal">measured or set peak end expiratory pressure</td>
+                                                    <td class="infoModal">Pmean</td>
+                                                    <td class="infoModal">measured mean airway pressure</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Rate</td>
+                                                    <td class="infoModal">measured or set breath rate</td>
+                                                    <td class="infoModal">I:E</td>
+                                                    <td class="infoModal">measured I:E ratio</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">FiO2</td>
+                                                    <td class="infoModal">measured or set O2 concentration</td>
+                                                    <td class="infoModal">Vte</td>
+                                                    <td class="infoModal">measured exhaled tidal volume</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Mve</td>
+                                                    <td class="infoModal">measured exhaled minute volume</td>
+                                                    <td class="infoModal">Palv</td>
+                                                    <td class="infoModal">alveaolar pressure</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Trig. win.</td>
+                                                    <td class="infoModal">trigger window to deliver synchronised assisted breaths. When off the ventilator delivers a pressure support breath</td>
+                                                    <td class="infoModal">Phase</td>
+                                                    <td class="infoModal">breath phase</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Mode</td>
+                                                    <td class="infoModal">set ventilation mode</td>
+                                                    <td class="infoModal">Vt</td>
+                                                    <td class="infoModal">set tidal volume, active in volume modes</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Pinsp</td>
+                                                    <td class="infoModal">set inspiratory pressure (above PEEP)</td>
+                                                    <td class="infoModal">Pause</td>
+                                                    <td class="infoModal">inspiratory pause, during volume breath delivery</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">PS</td>
+                                                    <td class="infoModal">set pressure support level (above PEEP)</td>
+                                                    <td class="infoModal">Itime</td>
+                                                    <td class="infoModal">set inspiratory time for mechanical breaths</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Compliance</td>
+                                                    <td class="infoModal">sets the simulated patient's compliance</td>
+                                                    <td class="infoModal">Resistance</td>
+                                                    <td class="infoModal">sets the simulated patient's airway resistance</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Approx. spont. rate</td>
+                                                    <td class="infoModal">set the simulated patients spontaneous breath rate</td>
+                                                    <td class="infoModal">Approx. spont. effort</td>
+                                                    <td class="infoModal">sets the simulated patient's spontaneous effort with 0 being weakest effort and 4 representing strongest effort</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Show alveolar waveform</td>
+                                                    <td class="infoModal">when selected the alveolar pressure is overlayed on the airway pressure waveform</td>
+                                                    <td class="infoModal">Zoom level</td>
+                                                    <td class="infoModal">sets the vertical scale of pressure, flow and volume waveforms</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="infoModal">Freeze waveforms</td>
+                                                    <td class="infoModal">when pressed the simulation stops. Pressing a second time restarts the simulation</td>
+                                                    <td class="infoModal">Spont effort</td>
+                                                    <td class="infoModal">when pressed it simulates a spontaneous breathing effort</td>
+                                                </tr>
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer>
+                                <small>&copy; Copyright 2014-2019, Andreas Tzanetakis | please send comments and questions to: andreas.tzanetakis@ge.com</small>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container center-block">
+                <div class="well well-lg">
+                    <div id="canvasesBg">
+                        <canvas id="canvPressure_bg" width="710" height="120"></canvas>
+                        <canvas id="canvAlvPressure_fg" width="660" height="120"></canvas>
+                        <canvas id="canvPressure_fg" width="660" height="120"></canvas>
+                        <canvas id="canvPnumerics_fg" width="200" height="120"></canvas>
+                        <canvas id="canvMarkers_bg" width="710" height="12"></canvas>
+                        <canvas id="canvMarkers_fg" width="660" height="12"></canvas>
+                        <canvas id="canvFlow_bg" width="710" height="120"></canvas>
+                        <canvas id="canvFlow_fg" width="660" height="120"></canvas>
+                        <canvas id="canvFnumerics_fg" width="200" height="120"></canvas>
+                        <canvas id="canvVolume_bg" width="710" height="120"></canvas>
+                        <canvas id="canvVolume_fg" width="660" height="120"></canvas>
+                        <canvas id="canvVnumerics_fg" width="200" height="120"></canvas>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-4">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default" onclick="freezeDisplay()">
+                                <span class="fa  fa-pause" id="freezeDisp"></span>
+                                </button>
+                                <button type="button" class="btn btn-default" onclick="freezeDisplay()">
+                                <span id="freezeDispTxt">Freeze waveforms</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default" onclick="infoModal()">
+                                <!-- <button type="button"class="btn btn-default"data-toggle="modal"data-target="#infoModal"> -->
+                                <span class="fa  fa-info"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn-group pull-right" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default " onclick="triggerBreath()">
+                                <span class="fa  fa-play"></span>
+                                </button>
+                                <button type="button" class="btn btn-default" onclick="triggerBreath()">
+                                <span>Spont Effort</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="headingOne">
+                        <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <span class="fa  fa-cogs" aria-hidden="true"></span>
+                            &nbsp;Ventilator Settings
+                            
+                        </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Mode</small>
+                                    </span>
+                                    <select class="form-control input-sm" id="mode-selector" onchange="setMode()">
+                                        <option value="acvc">A/C VC</option>
+                                        <option value="acpc">A/C PC</option>
+                                        <!-- <option value="acprvc">A/C PRVC</option> -->
+                                        <option value="simvvc">SIMV VC</option>
+                                        <option value="simvpc">SIMV PC</option>
+                                        <!-- <option value="simvprvc">SIMV PRVC</option> -->
+                                        <option value="cpapps">CPAP/PS</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>FiO2 [%]</small>
+                                    </span>
+                                    <input id="fio2" type="text" name="fio2" class="input-sm" onchange="setVent('fio2')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Vt [ml]</small>
+                                    </span>
+                                    <input id="vt" type="text" name="vt" class="input-sm" onchange="setVent('vt')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Pinsp [cmH2O]</small>
+                                    </span>
+                                    <input id="pinsp" type="text" name="pinsp" class="input-sm" disabled="true" onchange="setVent('pinsp')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Rate [bpm]</small>
+                                    </span>
+                                    <input id="rate" type="text" name="rate" class="input-sm" onchange="setVent('rate')"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Pause [%]</small>
+                                    </span>
+                                    <input id="pause" type="text" name="pause" class="input-sm" onchange="setVent('pause')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>PS [cmH2O]</small>
+                                    </span>
+                                    <input id="ps" type="text" name="ps" class="input-sm" disabled="true" onchange="setVent('ps')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>PEEP [cmH2O]</small>
+                                    </span>
+                                    <input id="peep" type="text" name="peep" class="input-sm" onchange="setVent('peep')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Itime [sec]</small>
+                                    </span>
+                                    <input id="itime" type="text" name="itime" class="input-sm" onchange="setVent('itime')"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="headingTwo">
+                        <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="fa  fa-user-injured" aria-hidden="true"></span>
+                            &nbsp;Patient Settings
+                            
+                        </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Compliance<br>[ml/cmH2O]</small>
+                                    </span>
+                                    <input name="comp" id="comp" type="text" class="input-sm" onchange="setLung('comp')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Resistance<br>[cmH2O/l/s]</small>
+                                    </span>
+                                    <input name="res" id="res" type="text" class="input-sm" onchange="setLung('res')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Approx. spont. rate<br>[BPM]</small>
+                                    </span>
+                                    <input name="srate" id="srate" type="text" class="input-sm" onchange="setLung('srate')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Approx. spont. effort<br>(0:weak 4:strong)</small>
+                                    </span>
+                                    <input name="effort" id="effort" type="text" class="input-sm" onchange="setLung('effort')"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>
+                                        <small>Lung Max Vt<br>[ml]</small>
+                                    </span>
+                                    <input name="lungSize" id="lungSize" type="text" class="input-sm" onchange="setLung('lungSize')"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="headingThree">
+                        <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <span class="fa  fa-eye" aria-hidden="true"></span>
+                            &nbsp;Display settings
+                        </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <!-- zoom buttons -->
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default btn-sm" id="pressure-zoom-in" onclick="setZoom('p','+')">
+                                        <span class="fa  fa-search-plus"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                        <span>Paw</span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm" id="pressure-zoom-out" onclick="setZoom('p','-')">
+                                        <span class="fa  fa-search-minus"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default btn-sm" id="flow-zoom-in" onclick="setZoom('f','+')">
+                                        <span class="fa  fa-search-plus"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm ">
+                                        <span>Flow</span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm" id="flow-zoom-out" onclick="setZoom('f','-')">
+                                        <span class="fa  fa-search-minus"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default btn-sm" id="volume-zoom-in" onclick="setZoom('v','+')">
+                                        <span class="fa  fa-search-plus"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                        <span>Vol</span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm" id="volume-zoom-out" onclick="setZoom('v','-')">
+                                        <span class="fa  fa-search-minus"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <input type="checkbox" id="showAlv">
+                                            </span>
+                                            <button type="button" class="btn btn-default btn-sm disabled">
+                                            <span>Show alveolar waveform</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+            "use strict";
+            $(document).ready(function() {
+            initializeSettings();
+            initializeCanvas();
+            startVentilation();
+            //$('#collapseThree').collapse('toggle');
+            });
+            </script>
+        </body>
+    </html>

@@ -1,0 +1,119 @@
+.center-block {
+    display: block;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1024px;
+    position: relative
+}
+
+#canvPressure_bg, #canvFlow_bg, #canvVolume_bg, #canvMarkers_bg {
+    opacity: 1;
+    position: absolute;
+    left: 1px
+}
+
+#canvPressure_fg, #canvAlvPressure_fg, #canvFlow_fg, #canvVolume_fg, #canvMarkers_fg {
+    position: absolute;
+    left: 51px
+}
+
+#canvPnumerics_fg, #canvFnumerics_fg, #canvVnumerics_fg {
+    opacity: 1;
+    position: absolute;
+    left: 720px
+}
+
+#canvPressure_bg, #canvPressure_fg, #canvAlvPressure_fg, #canvPnumerics_fg {
+    top: 10px
+}
+
+#canvMarkers_bg, #canvMarkers_fg {
+    top: 131px
+}
+
+#canvFlow_bg, #canvFlow_fg, #canvFnumerics_fg {
+    top: 152px
+}
+
+#canvVolume_fg, #canvVolume_bg, #canvVnumerics_fg {
+    top: 282px
+}
+
+div#canvasesBg {
+    background-image: url('../images/background_vitality_navyblue_plus9.png');
+    background-repeat: no-repeat;
+    height: 420px;
+    position: relative
+}
+
+.panel-body, .panel-heading, .well, .panel-default {
+    margin-bottom: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px
+}
+
+
+
+/*.panel {
+    margin-bottom: 20px;
+     background-color: #ffffff; 
+     border: 0px none transparent; 
+     border-radius: 4px; 
+     -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.05); 
+     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.05); 
+}*/
+
+.panel > .infoScreen {
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #dddddd;
+    background-image: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%);
+    background-image: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ffffff));
+    background-image: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
+    background-repeat: repeat-x;
+
+}
+
+.panel-group > .infoScreen {
+    border-top: 0px solid #dddddd;
+}
+
+.panel-heading > .infoScreen {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    color: inherit;
+}
+
+.modal-body {
+    font-size: 11px
+}
+
+#infoScreen {
+    width: 100%;
+}
+
+
+table.infoModal {
+
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td.infoModal, th.infoModal {
+  border: 1px solid #eeeeee;
+  text-align: left;
+  padding: 8px;
+}
+
+
+
+
+
+
+/*tr:nth-child(even) {
+  background-color: #eeeeee;
+}*/
