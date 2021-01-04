@@ -424,7 +424,7 @@ function initializeCanvas() {
     ctxV.lineWidth = 2;
     ctxV.moveTo(0, ctxV.canvas.height - scaleWaveform(0, sc.vmax, sc.vmin, ctxV.canvas.height));
     ctxF.beginPath();
-    if (isInArray(ventSettings.mode, ["acvc"])) {
+    if (isInArray(ventSettings.mode, ["acvc", "simvvc])) {
         ventSettings.flow = volToFlow(ventSettings.vt, ventSettings.itime, ventSettings.pause);
     }
 }
@@ -825,9 +825,6 @@ function setVent(param) {
     let localText = "";
     x = document.getElementById(param).value;
     ventSettings[param] = parseFloat(x);
-
-    // if (isInArray(param, ["vt", "itime", "pause"]) && ventSettings.mode === "acvc") {
-    //     ventSettings.flow = volToFlow(ventSettings.vt, ventSettings.itime, ventSettings.pause);
 
     if (isInArray(param, ["vt", "itime", "pause"]) && isInArray(ventSettings.mode, ["acvc", "simvvc"])) {
         ventSettings.flow = volToFlow(ventSettings.vt, ventSettings.itime, ventSettings.pause);
