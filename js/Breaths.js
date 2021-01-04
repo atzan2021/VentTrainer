@@ -826,7 +826,10 @@ function setVent(param) {
     x = document.getElementById(param).value;
     ventSettings[param] = parseFloat(x);
 
-    if (isInArray(param, ["vt", "itime", "pause"]) && ventSettings.mode === "acvc") {
+    // if (isInArray(param, ["vt", "itime", "pause"]) && ventSettings.mode === "acvc") {
+    //     ventSettings.flow = volToFlow(ventSettings.vt, ventSettings.itime, ventSettings.pause);
+
+    if (isInArray(param, ["vt", "itime", "pause"]) && isInArray(ventSettings.mode, ["acvc", "simvvc"])) {
         ventSettings.flow = volToFlow(ventSettings.vt, ventSettings.itime, ventSettings.pause);
 
     }
