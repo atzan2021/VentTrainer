@@ -9,9 +9,6 @@ const POSSTEP = 20;
 const MIN_EXP = 250;
 const PARABOLIC_RES = false;
 
-// experiment
-
-
 let ventSettings = {
     //ventilator settings
     mode: "acvc",
