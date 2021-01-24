@@ -424,7 +424,7 @@ function initializeCanvas() {
     ctxV.lineWidth = 2;
     ctxV.moveTo(0, ctxV.canvas.height - scaleWaveform(0, sc.vmax, sc.vmin, ctxV.canvas.height));
     ctxF.beginPath();
-    if (isInArray(ventSettings.mode, ["acvc", "simvvc])) {
+    if (isInArray(ventSettings.mode, ["acvc", "simvvc"])) {
         ventSettings.flow = volToFlow(ventSettings.vt, ventSettings.itime, ventSettings.pause);
     }
 }
