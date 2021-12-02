@@ -1,5 +1,5 @@
-# VentTrainer (edited)
-A website to experiment with ventilator settings
+# VentTrainer
+A web based simulator of a ventilator and the ventilated patient, in order to experiment with ventilator settings
 
 ## about this application
 
