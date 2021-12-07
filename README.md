@@ -17,6 +17,3 @@ It is possible to toggle display of the alveaolar pressure superimposed with the
 
 The real time monitored values are typically not shown on a real ventilator and they are displayed in faded type for debugging purposes
 In a real ventilator breath rate, exhaled minute volume and I:E ratio are running averages. in this sumulation they are calculated breath by breath
-
-
-[Start the simulator](VentTrainer.html) 
